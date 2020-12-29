@@ -1,2 +1,5 @@
-# PrivateMonitor
-监控私有化主机环境安全服务, 分为服务端和客户端
+### PrivateMonitorServer
+　　监控服务服务器端，运行一份
+
+### PrivateMonitorChild
+　　监控服务子服务端，　运行多份，在多个私有化环境中

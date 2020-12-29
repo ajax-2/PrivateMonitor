@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>私有化监控服务平台</title>
+</head>
+<body>
+    <h1>私有化监控服务平台</h1>
+    <div>
+        <h3>当前监控的私有化环境</h3>
+        <div>
+            {% if error | length > 10 %}
+                error: {{ cluster.error }}
+            {% else %}
+            {% for cluster in clusters %}
+            <p>
+                id: {{ cluster.id }} name: {{ cluster.name }} alias: {{ cluster.alias }} status: {{ cluster.status }}
+                create_time: {{ cluster.create_time }} last_update: {{ cluster.last_update }} detail: {{ cluster.detail }}
+            </p>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
