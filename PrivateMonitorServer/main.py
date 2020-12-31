@@ -9,6 +9,7 @@ from src.Handler.MainHandler import MainHandler
 from src.Handler.StatusHandler import StatusHandler
 from src.Handler.GetHandler import GetHandler
 import os
+import sys
 from src.tools.CronTools import CronCluster, CronMonitor, CronDataExpire
 
 # 初始化参数
@@ -58,7 +59,7 @@ def get_status(cluster):
     try:
         data = request.get_json()
         return StatusHandler.get_status(cluster, data)
-    except Exception :
+    except Exception:
         return u'参数错误'
 
 
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     conf.parse_from_config_ini()
     if not conf.check_config():
         print "Error: 参数配置不正确， 请查看config.ini"
-        os.abort()
+        sys.exit(1)
 
     # 创建数据库
     su = SqlUtil()
@@ -80,7 +81,5 @@ if __name__ == "__main__":
     CronCluster.start()
     # 启动数据自动清理
     CronDataExpire.start()
-
     # 运行web
-    app.run(host=web_host, port=web_port, debug=True)
-
+    app.run(host=web_host, port=web_port, debug=False)

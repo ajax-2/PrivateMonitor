@@ -35,9 +35,8 @@ class SqlUtil(object):
                                          self.config.mysql_port,
                                          self.config.mysql_db),
                                         echo=False,
-                                        pool_size=8,
+                                        pool_size=40,
                                         pool_recycle=self.connect_idle)
-        return self.engine
 
     # 创建DB会话类型
     def db_session(self):

@@ -3,3 +3,6 @@
 
 ### PrivateMonitorChild
 　　监控服务子服务端，　运行多份，在多个私有化环境中
+
+### 备注
+	详情查看单独文件里的README

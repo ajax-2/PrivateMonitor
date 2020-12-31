@@ -50,10 +50,10 @@ def test_insert_monitor():
 def test_insert_cluster():
     sql = SqlUtil()
     cluster = Cluster()
-    cluster.name = "demo"
-    cluster.detail = "本地测试使用"
-    cluster.alias = "测试"
-    cluster.ip = "10.1.9.171"
+    cluster.name = "Develop"
+    cluster.detail = "公司开发集群"
+    cluster.alias = "开发集群"
+    cluster.ip = "192.168.0.201"
     cluster.port = "6443"
     cluster.normal_ports = "ALL"
     cluster.create_time = DateTools.date_format(datetime.now())
@@ -99,13 +99,16 @@ def test_delete_monitor_data():
 
 
 if __name__ == "__main__":
-    Config().parse_from_config_ini()
+    conf = Config()
+    conf.parse_from_config_ini()
+    conf.mysql_host = "192.168.0.201"
+    conf.mysql_port = 3307
     # test_connect()
     # test_session()
     # test_get()
     # test_create()
     # test_insert_monitor()
-    # test_insert_cluster()
+    test_insert_cluster()
     # test_get_gt_date()
     # test_update()
-    test_delete_monitor_data()
+    # test_delete_monitor_data()

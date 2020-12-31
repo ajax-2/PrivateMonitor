@@ -11,15 +11,15 @@ class GetHandler(object):
         try:
             if type_id == "frequency":
                 return GetInterface.get_frequency()
+            if type_id.startswith("cluster"):
+                return GetInterface.check_cluster(type_id.split("|")[-1])
             return u'未知参数!'
         except Exception as e:
-            print e.message
-            abort(500, "未知错误!")
+            abort(500, u"未知错误!" % e.message)
 
     @staticmethod
     def post(type_id):
         try:
             return u'未知参数!'
         except Exception as e:
-            print e.message
-            abort(500, "未知错误!")
+            abort(500, u"未知错误! %s " % e.message)

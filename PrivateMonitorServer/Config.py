@@ -1,6 +1,5 @@
 # coding: utf-8
 
-import ConfigParser
 import os
 
 
@@ -8,9 +7,7 @@ import os
 class Config(object):
 
     # 常量
-    config = ConfigParser.ConfigParser()
     abs_path = os.path.split(os.path.abspath(__file__))[0]
-    config_file = "config.ini"
 
     # 需要解析变量
     # mysql
@@ -31,14 +28,16 @@ class Config(object):
 
     # 解析
     def parse_from_config_ini(self):
-        self.config.read(self.abs_path + os.path.sep + self.config_file)
-        self.mysql_db = self.config.get("mysql", "mysql_db")
-        self.mysql_host = self.config.get("mysql", "mysql_host")
-        self.mysql_port = self.config.getint("mysql", "mysql_port")
-        self.mysql_user = self.config.get("mysql", "mysql_user")
-        self.mysql_password = self.config.get("mysql", "mysql_password")
-        self.monitor_frequency = int(self.config.get("config", "monitor_frequency"))
-        self.data_keep = int(self.config.get("config", "data_keep"))
+        self.mysql_db = os.getenv("MYSQL_DB") or "private_monitor"
+        self.mysql_host = os.getenv("MYSQL_HOST") or "127.0.0.1"
+        self.mysql_port = os.getenv("MYSQL_PORT") or 3306
+        self.mysql_user = os.getenv("MYSQL_USER") or "private_monitor"
+        self.mysql_password = os.getenv("MYSQL_PASSWORD") or "private_monitor"
+        self.monitor_frequency = os.getenv("MONITOR_FREQUENCY") or 5
+        self.data_keep = os.getenv("DATA_KEEP") or 30
+        self.monitor_frequency = int(self.monitor_frequency)
+        self.data_keep = int(self.data_keep)
+        self.mysql_port = int(self.mysql_port)
 
     # 检验配置
     def check_config(self):
