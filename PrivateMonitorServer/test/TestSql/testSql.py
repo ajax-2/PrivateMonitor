@@ -50,11 +50,11 @@ def test_insert_monitor():
 def test_insert_cluster():
     sql = SqlUtil()
     cluster = Cluster()
-    cluster.name = "Develop"
-    cluster.detail = "公司开发集群"
-    cluster.alias = "开发集群"
-    cluster.ip = "192.168.0.201"
-    cluster.port = "6443"
+    cluster.name = "HuaweiK8s"
+    cluster.detail = "华为数融应用集群"
+    cluster.alias = "华为数融应用集群"
+    cluster.ip = "116.63.253.139"
+    cluster.port = "5443"
     cluster.normal_ports = "ALL"
     cluster.create_time = DateTools.date_format(datetime.now())
     cluster.last_update = DateTools.date_format(datetime.now())

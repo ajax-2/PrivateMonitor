@@ -22,8 +22,8 @@ class LocalMonitorServer(object):
         grafana_status = False
         prometheus_status = False
         try:
-            grafana_status = request("GET", li.grafana_url).status_code == 200
-            prometheus_status = request("GET", li.prometheus_url).status_code == 200
+            grafana_status = request("GET", li.grafana_url).status_code != 404
+            prometheus_status = request("GET", li.prometheus_url).status_code != 404
         except Exception:
             pass
         if grafana_status and prometheus_status:

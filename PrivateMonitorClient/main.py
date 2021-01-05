@@ -12,6 +12,12 @@ import threading
 import sys
 
 
+def update_url(url):
+    if "http" not in url:
+        return "http://" + url
+    return url
+
+
 if __name__ == '__main__':
     si = ServerInfo()
     li = LocalInfo()
@@ -22,6 +28,10 @@ if __name__ == '__main__':
     c_cluster = os.getenv("CLUSTER") or "demo"
     b_time = os.getenv("BACKUP_TIME") or "24"
     p_services = os.getenv("PRIMARY_SERVICE") or "sshd,rsyslog,systemd-journald"
+
+    s_url = update_url(s_url)
+    g_url = update_url(g_url)
+    p_url = update_url(p_url)
 
     # 初始化服务端信息
     if not si.set_server_info(s_url, c_cluster):

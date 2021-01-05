@@ -30,3 +30,8 @@ POST /status/CLUSTER
     bin/client 程序执行文件
     bin/config.conf 配置文件
     bin/run.py 执行文件入口, 会初始化系统环境和更新系统环境变量
+
+### TODO
+    定时检查关键服务，并启动
+    添加容器和机器模式
+    ssh log 设置查看
