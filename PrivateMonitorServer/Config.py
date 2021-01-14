@@ -19,6 +19,10 @@ class Config(object):
     # config
     monitor_frequency = None
     data_keep = None
+    # auth
+    username = None
+    password = None
+    auth_timeout = None
 
     # 单例
     def __new__(cls, *args, **kwargs):
@@ -38,6 +42,10 @@ class Config(object):
         self.monitor_frequency = int(self.monitor_frequency)
         self.data_keep = int(self.data_keep)
         self.mysql_port = int(self.mysql_port)
+        self.username = os.getenv('USER_NAME') or 'admin'
+        self.password = os.getenv('PASS_WORD') or 'Admin@123!'
+        self.auth_timeout = os.getenv("AUTH_TIMEOUT") or 10
+        self.auth_timeout = int(self.auth_timeout) * 60
 
     # 检验配置
     def check_config(self):

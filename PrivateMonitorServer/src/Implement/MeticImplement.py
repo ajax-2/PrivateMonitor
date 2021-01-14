@@ -28,7 +28,7 @@ class MetricImplement(object):
                 ))
 
         # 获取服务主动监控表
-        clusters, err = su.get_cluster_all()
+        clusters, err = su.get_cluster()
         if err:
             print "%s Error: %s" % (DateTools.date_format(dt), err)
         else:

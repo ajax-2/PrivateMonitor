@@ -27,7 +27,7 @@ POST /status/CLUSTER
 
 ### bin/* （调试程序不会用到）
     bin 目录下存放了在linux上执行的可执行文件
-    bin/client 程序执行文件
+    bin/main/main 程序执行文件
     bin/config.conf 配置文件
     bin/run.py 执行文件入口, 会初始化系统环境和更新系统环境变量
 

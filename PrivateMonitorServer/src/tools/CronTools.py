@@ -76,7 +76,7 @@ class CronCluster(object):
     def check_port():
         try:
             su = CronCluster.su
-            clusters, err = su.get_cluster_all()
+            clusters, err = su.get_cluster()
             if err:
                 print err
                 return
@@ -134,7 +134,7 @@ class CronCluster(object):
     def check_firewalld():
         try:
             su = CronCluster.su
-            clusters, err = su.get_cluster_all()
+            clusters, err = su.get_cluster()
             if err:
                 print err
                 return

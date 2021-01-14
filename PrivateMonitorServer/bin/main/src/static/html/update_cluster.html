@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加集群</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <div style="border:2px solid #000">
+    {% if error %}
+        <h3>根据此id无法获取到集群信息， {{ error }}</h3>
+    {% else %}
+    <form action="/update/{{ cluster_id }}" method="post">
+        <title>添加私有化集群到监控服务平台</title>
+        <p>集群名: <input type="text" name="name" required value="{{ data.name }}"></p>
+        <p>集群别名: <input type="text" name="alias" required value="{{ data.alias }}"></p>
+        <p>集群公网ip: <input type="text" name="ip" required value="{{ data.ip }}"></p>
+        <p>集群公网端口: <input type="text" name="port" required value="{{ data.port }}"></p>
+        <p>正常开放端口(用英文,隔开，ALL表示所有端口都开放): <input type="text" name="normal_ports" required value="{{ data.normal_ports }}"></p>
+        <p>详细信息描述<input type="text" name="detail" required value="{{ data.detail }}"></p>
+        <p><input type="submit" value="提交"></p>
+    </form>
+    {% endif %}
+    </div>
+    <div style="clear:both; height: 10px"></div>
+    <div>
+        <a href="/" target="_self">返回状态查看</a>
+    </div>
+
+</body>
+</html>

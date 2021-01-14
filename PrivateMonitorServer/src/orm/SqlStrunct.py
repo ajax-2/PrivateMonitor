@@ -30,7 +30,7 @@ class Cluster(Base):
 
     # 字段
     id = Column(Integer, primary_key=True, autoincrement=True, comment=u"主键id")
-    name = Column(String(32), comment=u"集群名")
+    name = Column(String(32), comment=u"集群名", unique=True)
     alias = Column(String(64), comment=u"别名")
     status = Column(Boolean, default=False, comment=u"状态")
     create_time = Column(DateTime, comment=u"创建时间")

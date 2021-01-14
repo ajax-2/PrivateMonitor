@@ -32,9 +32,10 @@ def test_compute():
 
 
 if __name__ == "__main__":
+
     # print "dt"
-    # test_date_format()
+    test_date_format()
     #
     # print "st"
     # test_str_format()
-    test_compute()
+    # test_compute()

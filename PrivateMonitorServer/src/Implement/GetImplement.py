@@ -18,7 +18,7 @@ class GetImplement(object):
     @staticmethod
     def check_cluster(cluster_name):
         su = SqlUtil()
-        clusters, _ = su.get_cluster_all()
+        clusters, _ = su.get_cluster()
         cluster_names = [cluster.name for cluster in clusters]
         if cluster_name not in cluster_names:
             raise Exception("此集群不存在， 请手动添加!")

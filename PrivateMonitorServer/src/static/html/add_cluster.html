@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加集群</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <div style="border:2px solid #000">
+    <form action="/add" method="post">
+        <title>添加私有化集群到监控服务平台</title>
+        <p>集群名: <input type="text" name="name" required></p>
+        <p>集群别名: <input type="text" name="alias" required></p>
+        <p>集群公网ip: <input type="text" name="ip" required></p>
+        <p>集群公网端口: <input type="text" name="port" value="6443" required></p>
+        <p>正常开放端口(用英文,隔开，ALL表示所有端口都开放): <input type="text" name="normal_ports" value="6443,58080" required></p>
+        <p>详细信息描述<input type="text" name="detail" required></p>
+        <p><input type="submit" value="提交"></p>
+    </form>
+    </div>
+    <div style="clear:both; height: 10px"></div>
+    <div>
+        <a href="/" target="_self">返回状态查看</a>
+    </div>
+
+</body>
+</html>

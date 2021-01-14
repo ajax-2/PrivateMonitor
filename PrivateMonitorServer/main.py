@@ -10,6 +10,7 @@ from src.Handler.StatusHandler import StatusHandler
 from src.Handler.GetHandler import GetHandler
 import os
 import sys
+from src.auth.Auth import Auth
 from src.tools.CronTools import CronCluster, CronMonitor, CronDataExpire
 
 # 初始化参数
@@ -28,6 +29,52 @@ app.template_folder = conf.abs_path + sep + "src" + sep + "static" + sep + "html
 @app.route('/', methods=["GET"])
 def web_main():
     return MainHandler.main()
+
+
+# 验证
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    url = request.args.get("url")
+    if request.method == "GET":
+        return MainHandler.login(url)
+    else:
+        data = request.form
+        ip = request.remote_addr
+        return MainHandler.login_verify(data.to_dict(), ip)
+
+
+# 添加集群到私有化监控平台
+@app.route('/add', methods=["GET", "POST"])
+def add():
+    ip = request.remote_addr
+    if request.method == "GET":
+        return MainHandler.return_add_html(ip)
+    elif request.method == "POST":
+        data = request.form
+        return MainHandler.add_cluster(data.to_dict(), ip)
+    else:
+        return u'方法不允许!'
+
+
+# 从私有化监控平台中删除集群
+@app.route("/delete/<cluster_id>", methods=["POST"])
+def delete_cluster(cluster_id):
+    ip = request.remote_addr
+    return MainHandler.delete_cluster(cluster_id, ip)
+
+
+# 更新私有化监控平台中的集群
+@app.route("/update/<cluster_id>", methods=["GET", "POST"])
+def update(cluster_id):
+    ip = request.remote_addr
+    if __name__ == '__main__':
+        if request.method == "GET":
+            return MainHandler.get_update_cluster(cluster_id, ip)
+        elif request.method == "POST":
+            data = request.form
+            return MainHandler.update_cluster(cluster_id, data.to_dict(), ip)
+        else:
+            return u"方法不允许!"
 
 
 # 监控
@@ -81,5 +128,7 @@ if __name__ == "__main__":
     CronCluster.start()
     # 启动数据自动清理
     CronDataExpire.start()
+    # 启动用户超时检验
+    Auth().cron_start()
     # 运行web
     app.run(host=web_host, port=web_port, debug=False)

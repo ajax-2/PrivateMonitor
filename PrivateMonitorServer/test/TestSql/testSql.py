@@ -50,11 +50,11 @@ def test_insert_monitor():
 def test_insert_cluster():
     sql = SqlUtil()
     cluster = Cluster()
-    cluster.name = "HuaweiK8s"
-    cluster.detail = "华为数融应用集群"
-    cluster.alias = "华为数融应用集群"
-    cluster.ip = "116.63.253.139"
-    cluster.port = "5443"
+    cluster.name = "HuaweiCloudera"
+    cluster.detail = "华为数融大数据集群"
+    cluster.alias = "华为数融大数据集群"
+    cluster.ip = "116.63.229.215"
+    cluster.port = "7180"
     cluster.normal_ports = "ALL"
     cluster.create_time = DateTools.date_format(datetime.now())
     cluster.last_update = DateTools.date_format(datetime.now())
@@ -80,8 +80,10 @@ def test_get_gt_date():
 
 def test_update():
     su = SqlUtil()
-    objs, _ = su.get_cluster_all()
-    obj = objs[-1]
+    obj, err = su.get_cluster(8)
+    if err:
+        print err
+        return
     print obj
     obj.status = False
     obj.last_update = DateTools.date_format(datetime.now())
@@ -108,7 +110,8 @@ if __name__ == "__main__":
     # test_get()
     # test_create()
     # test_insert_monitor()
-    test_insert_cluster()
+    # test_insert_cluster()
     # test_get_gt_date()
     # test_update()
+    test_update()
     # test_delete_monitor_data()

@@ -26,11 +26,16 @@ class Main(object):
         mysql_password = Main.config.get("mysql", "mysql_password")
         monitor_frequency = Main.config.get("config", "monitor_frequency")
         data_keep = Main.config.get("config", "data_keep")
+        username = Main.config.get('auth', "user_name")
+        password = Main.config.get('auth', "pass_word")
+        auth_timeout = Main.config.get('auth', "auth_timeout")
         try:
             if monitor_frequency:
                 int(monitor_frequency)
             if data_keep:
                 int(data_keep)
+            if auth_timeout:
+                int(auth_timeout)
         except Exception as e:
             print e.message
             return False
@@ -41,18 +46,21 @@ class Main(object):
         os.putenv("MYSQL_PASSWORD", mysql_password)
         os.putenv("MONITOR_FREQUENCY", monitor_frequency)
         os.putenv("DATA_KEEP", data_keep)
+        os.putenv('USER_NAME', username)
+        os.putenv('PASS_WORD', password)
+        os.putenv("AUTH_TIMEOUT", auth_timeout)
         return True
 
     # start
     @staticmethod
     def start():
-        if not os.path.isfile(Main.abs_path + "/server"):
-            print "当前程序client文件不存在， 请拉取server后在运行此项目!"
+        if not os.path.isfile(Main.abs_path + "/main/main"):
+            print "当前程序main文件不存在， 请拉取main后在运行此项目!"
             sys.exit(1)
         if not os.getenv("MYSQL_HOST"):
             if not Main.parse():
                 sys.exit(1)
-        os.system(Main.abs_path + "/server > /dev/stdout")
+        os.system(Main.abs_path + "/main/main > /dev/stdout")
 
 
 if __name__ == "__main__":

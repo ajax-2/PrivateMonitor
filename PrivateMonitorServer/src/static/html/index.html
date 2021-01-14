@@ -5,21 +5,72 @@
     <title>私有化监控服务平台</title>
 </head>
 <body>
-    <h1>私有化监控服务平台</h1>
-    <div>
-        <h3>当前监控的私有化环境</h3>
-        <div>
-            {% if error | length > 10 %}
-                error: {{ cluster.error }}
-            {% else %}
-            {% for cluster in clusters %}
-            <p>
-                id: {{ cluster.id }} name: {{ cluster.name }} alias: {{ cluster.alias }} status: {{ cluster.status }}
-                create_time: {{ cluster.create_time }} last_update: {{ cluster.last_update }} detail: {{ cluster.detail }}
-            </p>
-            {% endfor %}
-            {% endif %}
+        {% if error %}
+        <h3> error: {{ error }}</h3>
+        {% else %}
+        <div style="border:2px solid #000">
+            <table border="1" bgcolor="#fafaff" align="left" valign="midden" style="width: 100%">
+                <caption align="top">集群信息展示</caption>
+                <tbody>
+                    <tr>
+                        <td>序号</td>
+                        <td>集群名</td>
+                        <td>集群别名</td>
+                        <td>创建时间</td>
+                        <td>状态最后更新时间</td>
+                        <td>状态</td>
+                        <td>详细</td>
+                    </tr>
+                    {% for cluster in clusters %}
+                    <tr>
+                        <td>{{ cluster.id }}</td>
+                        <td>{{ cluster.name }}</td>
+                        <td>{{ cluster.alias }}</td>
+                        <td>{{ cluster.create_time }}</td>
+                        <td>{{ cluster.last_update }}</td>
+                        {% if cluster.status %}
+                        <td bgcolor="green">检验正常</td>
+                        {% else %}
+                        <td bgcolor="red">检验异常</td>
+                        {% endif %}
+                        <td>{{ cluster.detail }}</td>
+                        <td>
+                            <button onclick="delete_cluster({{ cluster.id }})">删除</button>
+                            <a href="/update/{{ cluster.id }}">更新</a>
+                        </td>
+                    {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
+        <div style="clear:both; height: 10px"></div>
+        <div>
+            <a href="/add" target="_self">添加私有化集群</a>
+        </div>
+        {% endif %}
+    <script>
+        function delete_cluster(cluster_id){
+            if (! confirm("是否删除集群: " + cluster_id)){
+                return
+            }
+            var request = new XMLHttpRequest();
+            request.onload = function(){
+                if (request.status == 200){
+                    var result = request.responseText
+                    if (result == "noAuth"){
+                        window.location.href='/login?url=/';
+                    } else {
+                        alert("删除成功;" + result);
+                        location.reload();
+                    }
+                }
+                if(request.status != 200) {
+                    alert("删除失败\n" + request.responseText);
+                }
+            }
+            request.open("POST","/delete/" + cluster_id);
+            request.send(null);
+        }
+    </script>
 </body>
 </html>

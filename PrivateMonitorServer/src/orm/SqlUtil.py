@@ -80,10 +80,13 @@ class SqlUtil(object):
             return None, e.message
 
     # 获取cluster
-    def get_cluster_all(self):
+    def get_cluster(self, cluster_id=None):
         try:
             session = self.session()
-            return session.query(Cluster).all(), None
+            if not cluster_id:
+                return session.query(Cluster).all(), None
+            else:
+                return session.query(Cluster).filter(Cluster.id == cluster_id).one(), None
         except Exception as e:
             return None, e.message
 
@@ -109,7 +112,15 @@ class SqlUtil(object):
             self.db_session()
             session = self.session()
             session.query(Cluster).filter(Cluster.id == obj.id).update(
-                {"status": obj.status, "last_update": obj.last_update}
+                {
+                    "status": obj.status,
+                    "name": obj.name,
+                    "detail": obj.detail,
+                    "alias": obj.alias,
+                    "ip": obj.ip,
+                    "port": obj.port,
+                    "normal_ports": obj.normal_ports,
+                }
             )
             session.commit()
             session.close()
@@ -123,6 +134,18 @@ class SqlUtil(object):
             self.db_session()
             session = self.session()
             session.query(Monitor).filter(Monitor.time < expire_time).delete()
+            session.commit()
+            session.close()
+            return "Well", None
+        except Exception as e:
+            return None, e.message
+
+    # 从私有化监控中删除一个集群
+    def delete_cluster(self, cluster_id):
+        try:
+            self.db_session()
+            session = self.session()
+            session.query(Cluster).filter(Cluster.id == cluster_id).delete()
             session.commit()
             session.close()
             return "Well", None
