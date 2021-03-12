@@ -35,7 +35,7 @@ class SqlUtil(object):
                                          self.config.mysql_port,
                                          self.config.mysql_db),
                                         echo=False,
-                                        pool_size=40,
+                                        pool_size=10,
                                         pool_recycle=self.connect_idle)
 
     # 创建DB会话类型
@@ -56,18 +56,27 @@ class SqlUtil(object):
     # obj, 数据表对象
     # start stop 开始 和 结束 行号
     def get(self, obj, start=0, stop=10):
+        session = None
         try:
             if stop - start > 100:
                 raise Exception("一次性行数超过100行,当前信息， start: %s, stop: %s" % (start, stop))
             if not isinstance(obj, Base.__class__):
                 raise Exception("传入的obj必须是Base类型的子类")
             session = self.session()
-            return session.query(obj).slice(start, stop).all(), None
+            query = session.query(obj).slice(start, stop).all()
+            return query, None
         except Exception as e:
             return None, e.message
+        finally:
+            if session:
+                try:
+                    session.close()
+                except:
+                    pass
 
     # 获取指定时间后的记录, 不指定time时获取所有, obj 为数据表类型
     def get_monitor_data_gt_time(self, obj, time=None):
+        session = None
         try:
             if not isinstance(obj, Monitor.__class__):
                 raise Exception("传入的obj必须是Monitor类型")
@@ -78,9 +87,16 @@ class SqlUtil(object):
                 return session.query(obj).all(), None
         except Exception as e:
             return None, e.message
+        finally:
+            if session:
+                try:
+                    session.close()
+                except:
+                    pass
 
     # 获取cluster
     def get_cluster(self, cluster_id=None):
+        session = None
         try:
             session = self.session()
             if not cluster_id:
@@ -89,9 +105,16 @@ class SqlUtil(object):
                 return session.query(Cluster).filter(Cluster.id == cluster_id).one(), None
         except Exception as e:
             return None, e.message
+        finally:
+            if session:
+                try:
+                    session.close()
+                except:
+                    pass
 
     # 插入单行sql
     def insert_one_sql(self, obj):
+        session = None
         try:
             if not isinstance(obj, Base):
                 raise Exception("传入的obj必须是Base类型的子类")
@@ -103,9 +126,16 @@ class SqlUtil(object):
             return "Well", None
         except Exception as e:
             return None, e.message
+        finally:
+            if session:
+                try:
+                    session.close()
+                except:
+                    pass
 
     # 更新单个sql
     def update_cluster_sql(self, obj):
+        session = None
         try:
             if not isinstance(obj, Cluster):
                 raise Exception("传入的obj必须是Base类型的子类")
@@ -127,9 +157,16 @@ class SqlUtil(object):
             return "Well", None
         except Exception as e:
             return None, e.message
+        finally:
+            if session:
+                try:
+                    session.close()
+                except:
+                    pass
 
     # 删除过期数据
     def delete_expire_monitor_data(self, expire_time):
+        session = None
         try:
             self.db_session()
             session = self.session()
@@ -139,9 +176,16 @@ class SqlUtil(object):
             return "Well", None
         except Exception as e:
             return None, e.message
+        finally:
+            if session:
+                try:
+                    session.close()
+                except:
+                    pass
 
     # 从私有化监控中删除一个集群
     def delete_cluster(self, cluster_id):
+        session = None
         try:
             self.db_session()
             session = self.session()
@@ -151,3 +195,9 @@ class SqlUtil(object):
             return "Well", None
         except Exception as e:
             return None, e.message
+        finally:
+            if session:
+                try:
+                    session.close()
+                except:
+                    pass
